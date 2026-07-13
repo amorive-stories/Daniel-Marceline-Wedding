@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation | Daniel & Marceline</title>
     
+    <!-- Aesthetic Fonts from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
@@ -148,15 +149,39 @@
         .gallery img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; transition: transform 0.3s; }
         .gallery img:hover { transform: scale(1.03); }
         
-        /* Floating Music Button */
-        #music-btn { position: fixed; bottom: 25px; right: 25px; background: var(--accent-brown); color: white; border-radius: 50%; width: 55px; height: 55px; border: none; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 22px; display: flex; justify-content: center; align-items: center; transition: 0.3s; opacity: 0; visibility: hidden;}
-        #music-btn.show { opacity: 1; visibility: visible; }
-        #music-btn:hover { background: var(--text-dark); transform: scale(1.1); }
+        /* Floating Buttons (Music & Auto-Scroll) */
+        .floating-btn {
+            position: fixed;
+            right: 25px;
+            background: var(--accent-brown);
+            color: white;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .floating-btn.show { opacity: 1; visibility: visible; }
+        .floating-btn:hover { background: var(--text-dark); transform: scale(1.1); }
+
+        /* Posisi tombol */
+        #music-btn { bottom: 25px; }
+        #scroll-btn { bottom: 90px; } /* Ditaruh di atas tombol musik */
 
     </style>
 </head>
 <body class="locked">
 
+    <!-- === HALAMAN COVER DEPAN DENGAN VIDEO BACKGROUND === -->
     <div id="welcome-cover">
         <video class="cover-video-bg" autoplay loop muted playsinline>
             <source src="video1.mp4" type="video/mp4">
@@ -176,13 +201,17 @@
         </div>
     </div>
 
+    <!-- Background Music & Auto Scroll Buttons -->
     <audio id="bg-music" loop>
         <source src="sound.mp3" type="audio/mpeg">
     </audio>
-    <button id="music-btn" onclick="toggleMusic()">⏸️</button>
+    <button id="music-btn" class="floating-btn" onclick="toggleMusic()">⏸️</button>
+    <button id="scroll-btn" class="floating-btn" onclick="toggleAutoScroll()" title="Auto Scroll">⏬</button>
 
+    <!-- === KONTEN UTAMA UNDANGAN === -->
     <div class="container">
         
+        <!-- SECTION 1: HERO -->
         <div class="section hero reveal">
             <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em;">You Are Invited To The Wedding Of</p>
             <img src="bridegroom.png" alt="Bride and Groom Cover" class="hero-img">
@@ -193,6 +222,7 @@
             <h2 id="nama-tamu-hero" style="margin-top: 0; font-size: 1.8em;">Guest Name</h2>
         </div>
 
+        <!-- SECTION 2: PROFILES (ATAS BAWAH) -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">The Bride & Groom</h2>
             <p style="font-size: 0.9em; color: #666; margin-bottom: 30px;">With the blessing of God and our families</p>
@@ -213,6 +243,7 @@
             </div>
         </div>
 
+        <!-- SECTION 3: LOVE STORY (3 PARAGRAF) & VIDEO LOCAL -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Our Love Story</h2>
             
@@ -230,6 +261,7 @@
             </video>
         </div>
 
+        <!-- SECTION 4: DATE, TIME & MAPS -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Save The Date</h2>
             <p style="font-size: 1.1em; font-weight: 500;">Saturday, December 14th, 2024</p>
@@ -249,6 +281,7 @@
             <a href="https://calendar.google.com" target="_blank" class="btn">📅 Save to Calendar</a>
         </div>
 
+        <!-- SECTION 5: PRE-WEDDING GALLERY -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Gallery</h2>
             <div class="gallery">
@@ -261,6 +294,7 @@
             </div>
         </div>
 
+        <!-- SECTION 6: GIFTING (2 REKENING) -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Wedding Gift</h2>
             <p style="font-size: 0.9em; line-height: 1.6; color: #555;">Your presence and prayers are the greatest gifts we could ask for. However, if you wish to give a gift to bless our marriage, you may send it via:</p>
@@ -282,6 +316,7 @@
             </div>
         </div>
 
+        <!-- SECTION 7: RSVP -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">RSVP & Wishes</h2>
             <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">Kindly confirm your attendance</p>
@@ -303,10 +338,12 @@
 
                 <textarea name="ucapan" rows="5" placeholder="Leave a wish or message for the couple..." required></textarea>
                 
-                <button type="submit" class="btn" style="width: 100%; margin: 10px 0 0 0;">Send RSVP & Wishes</button>
+                <!-- ID ditambahkan agar tombol bisa menghentikan auto-scroll saat diklik/fokus -->
+                <button type="submit" class="btn" style="width: 100%; margin: 10px 0 0 0;" id="submit-rsvp">Send RSVP & Wishes</button>
             </form>
         </div>
 
+        <!-- SECTION 8: CLOSING -->
         <div class="section reveal" style="border-bottom: none; padding: 50px 25px 80px 25px;">
             <p style="font-size: 0.95em; line-height: 1.7; color: #555; font-style: italic; margin-bottom: 20px; padding: 0 10px;">
                 "Your presence and prayers will add an abundance of joy to our special day. We are endlessly grateful for your love and support as we embark on this beautiful journey together."
@@ -317,6 +354,7 @@
 
     </div>
 
+    <!-- JAVASCRIPT -->
     <script>
         // 1. Get Guest Name
         const urlParams = new URLSearchParams(window.location.search);
@@ -331,6 +369,7 @@
         // 2. Fungsi Membuka Undangan
         const bgMusic = document.getElementById("bg-music");
         const musicBtn = document.getElementById("music-btn");
+        const scrollBtn = document.getElementById("scroll-btn");
         const bodyTag = document.body;
         const coverTag = document.getElementById("welcome-cover");
         
@@ -338,7 +377,11 @@
 
         function openInvitation() {
             bgMusic.play();
+            
+            // Tampilkan tombol melayang
             musicBtn.classList.add("show");
+            scrollBtn.classList.add("show");
+            
             musicBtn.innerText = "⏸️";
             isMusicIntentionallyPaused = false;
 
@@ -346,6 +389,9 @@
             bodyTag.classList.remove("locked");
 
             setTimeout(revealOnScroll, 500); 
+            
+            // Opsional: Langsung nyalakan auto-scroll setelah undangan dibuka
+            // setTimeout(toggleAutoScroll, 1500);
         }
 
         // 3. Toggle Music Play/Pause
@@ -369,6 +415,8 @@
                 bgMusic.pause();
                 musicBtn.innerText = "🎵";
             }
+            // Matikan auto-scroll jika video diputar
+            if (isAutoScrolling) toggleAutoScroll();
         });
 
         storyVideo.addEventListener('pause', function() {
@@ -389,12 +437,45 @@
             if (document.hidden) {
                 bgMusic.pause();
                 musicBtn.innerText = "🎵";
+                if (isAutoScrolling) toggleAutoScroll(); // Pause scroll jika pindah tab
             } else if (!isMusicIntentionallyPaused && !document.body.classList.contains("locked")) {
                 // Jangan nyalakan otomatis jika masih di cover
             }
         });
 
-        // 5. Countdown Timer
+        // 5. Fitur Auto-Scroll Pelan
+        let scrollInterval;
+        let isAutoScrolling = false;
+
+        function toggleAutoScroll() {
+            if (isAutoScrolling) {
+                clearInterval(scrollInterval);
+                isAutoScrolling = false;
+                scrollBtn.innerText = "⏬"; 
+            } else {
+                scrollInterval = setInterval(function() {
+                    window.scrollBy(0, 1); // Turun 1 pixel
+                    
+                    // Cek jika sudah sampai bagian paling bawah, matikan otomatis
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+                        toggleAutoScroll();
+                    }
+                }, 30); // Kecepatan (30ms per 1 pixel = sangat pelan & halus)
+                
+                isAutoScrolling = true;
+                scrollBtn.innerText = "⏸️";
+            }
+        }
+
+        // Matikan auto-scroll saat tamu mengklik input form (agar bisa mengetik dengan nyaman)
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                if (isAutoScrolling) toggleAutoScroll();
+            });
+        });
+
+        // 6. Countdown Timer
         const countDownDate = new Date("Dec 14, 2024 19:00:00").getTime();
         const x = setInterval(function() {
             const now = new Date().getTime();
@@ -411,13 +492,13 @@
             }
         }, 1000);
 
-        // 6. Copy Bank Account
+        // 7. Copy Bank Account
         function copyRekening(noRekening) {
             navigator.clipboard.writeText(noRekening);
             alert("Account number " + noRekening + " copied to clipboard!");
         }
 
-        // 7. Scroll Reveal Transition
+        // 8. Scroll Reveal Transition
         function revealOnScroll() {
             const reveals = document.querySelectorAll('.reveal');
             const windowHeight = window.innerHeight;
