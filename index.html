@@ -56,20 +56,10 @@
             transform: translateY(-100%);
         }
 
-        .cover-img {
-            width: 100%;
-            max-width: 250px;
-            height: 350px;
-            border-radius: 150px 150px 10px 10px;
-            object-fit: cover;
-            margin-bottom: 25px;
-            border: 4px solid var(--border-color);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
         #welcome-cover .names {
             font-size: 3.5em;
             line-height: 1.2;
+            margin: 15px 0;
         }
 
         /* Container Utama Undangan */
@@ -151,19 +141,16 @@
 
     <!-- === HALAMAN COVER DEPAN === -->
     <div id="welcome-cover">
-        <!-- Tambahan foto di cover depan agar tidak polos -->
-        <img src="bridegroom.png" alt="Cover Photo" class="cover-img">
-        
         <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; margin: 0 0 10px 0;">The Wedding Of</p>
         
         <div class="names">Daniel <br>&<br> Marceline</div>
         
-        <div style="margin: 25px 0;">
+        <div style="margin: 35px 0 45px 0;">
             <p style="font-size: 0.9em; margin-bottom: 5px;">Dear,</p>
             <h2 id="nama-tamu-cover" style="margin-top: 0; font-size: 1.8em;">Guest Name</h2>
         </div>
         
-        <button class="btn" onclick="openInvitation()" style="padding: 16px 35px; border-radius: 40px;">Open Invitation</button>
+        <button class="btn" onclick="openInvitation()" style="padding: 16px 35px; border-radius: 40px; font-size: 15px;">Open Invitation</button>
     </div>
 
     <!-- Background Music -->
@@ -219,7 +206,8 @@
                 <p>Today, we are thrilled to take this beautiful step forward. We cannot wait to celebrate our love and the beginning of our forever with the people we cherish the most.</p>
             </div>
 
-            <video width="100%" height="300" controls style="border-radius: 8px; margin-top: 20px;">
+            <!-- Ditambahkan ID story-video untuk dikontrol via JavaScript -->
+            <video id="story-video" width="100%" height="300" controls style="border-radius: 8px; margin-top: 20px;">
                 <source src="video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -288,7 +276,6 @@
             <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">Kindly confirm your attendance</p>
             
             <form id="rsvp-form" action="URL_GOOGLE_APPS_SCRIPT_KAMU" method="POST">
-                <!-- ID rsvp-nama ditambahkan agar bisa di-autofill oleh JavaScript -->
                 <input type="text" id="rsvp-nama" name="nama" placeholder="Your Name" required>
                 
                 <select name="kehadiran" required>
@@ -339,11 +326,15 @@
         const musicBtn = document.getElementById("music-btn");
         const bodyTag = document.body;
         const coverTag = document.getElementById("welcome-cover");
+        
+        // Variable untuk mendeteksi apakah musik dimatikan sengaja oleh tamu
+        let isMusicIntentionallyPaused = false; 
 
         function openInvitation() {
             bgMusic.play();
             musicBtn.classList.add("show");
             musicBtn.innerText = "⏸️";
+            isMusicIntentionallyPaused = false;
 
             coverTag.classList.add("slide-up");
             bodyTag.classList.remove("locked");
@@ -356,20 +347,51 @@
             if (bgMusic.paused) {
                 bgMusic.play();
                 musicBtn.innerText = "⏸️";
+                isMusicIntentionallyPaused = false;
             } else {
                 bgMusic.pause();
                 musicBtn.innerText = "🎵";
+                isMusicIntentionallyPaused = true;
             }
         }
 
-        document.addEventListener("visibilitychange", function() {
-            if (document.hidden) {
+        // 4. Integrasi Musik Latar & Video (Auto Pause/Play)
+        const storyVideo = document.getElementById("story-video");
+        
+        // Saat video di-play, musik latar mati
+        storyVideo.addEventListener('play', function() {
+            if (!bgMusic.paused) {
                 bgMusic.pause();
                 musicBtn.innerText = "🎵";
             }
         });
 
-        // 4. Countdown Timer (Dihapus saat waktu habis)
+        // Saat video di-pause atau selesai, musik menyala lagi (kecuali sebelumnya dimatikan manual)
+        storyVideo.addEventListener('pause', function() {
+            if (!isMusicIntentionallyPaused) {
+                bgMusic.play();
+                musicBtn.innerText = "⏸️";
+            }
+        });
+        
+        storyVideo.addEventListener('ended', function() {
+            if (!isMusicIntentionallyPaused) {
+                bgMusic.play();
+                musicBtn.innerText = "⏸️";
+            }
+        });
+
+        // Matikan musik otomatis jika pindah tab browser
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                bgMusic.pause();
+                musicBtn.innerText = "🎵";
+            } else if (!isMusicIntentionallyPaused && !document.body.classList.contains("locked")) {
+                // Jangan nyalakan lagi jika di-cover atau sengaja dimatikan
+            }
+        });
+
+        // 5. Countdown Timer (Dihapus saat waktu habis)
         const countDownDate = new Date("Dec 14, 2024 19:00:00").getTime();
         const x = setInterval(function() {
             const now = new Date().getTime();
@@ -387,13 +409,13 @@
             }
         }, 1000);
 
-        // 5. Copy Bank Account (Dinamic parameter)
+        // 6. Copy Bank Account (Dinamic parameter)
         function copyRekening(noRekening) {
             navigator.clipboard.writeText(noRekening);
             alert("Account number " + noRekening + " copied to clipboard!");
         }
 
-        // 6. Scroll Reveal Transition
+        // 7. Scroll Reveal Transition
         function revealOnScroll() {
             const reveals = document.querySelectorAll('.reveal');
             const windowHeight = window.innerHeight;
