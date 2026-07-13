@@ -19,6 +19,11 @@
             --border-color: #E6DFD3;
         }
 
+        /* Mengunci scroll sebelum undangan dibuka */
+        body.locked {
+            overflow: hidden;
+        }
+
         body {
             background-color: var(--bg-color);
             font-family: 'Montserrat', sans-serif;
@@ -29,6 +34,34 @@
             overflow-x: hidden;
         }
 
+        /* === STYLING UNTUK COVER DEPAN === */
+        #welcome-cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #FAF8F5;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1); /* Efek slide up halus */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        /* Class ini akan ditambahkan saat tombol diklik untuk menggeser cover ke atas */
+        #welcome-cover.slide-up {
+            transform: translateY(-100%);
+        }
+
+        #welcome-cover .names {
+            font-size: 4em;
+        }
+
+        /* Container Utama Undangan */
         .container {
             max-width: 600px;
             margin: auto;
@@ -97,19 +130,35 @@
         .gallery img:hover { transform: scale(1.03); }
         
         /* Floating Music Button */
-        #music-btn { position: fixed; bottom: 25px; right: 25px; background: var(--accent-brown); color: white; border-radius: 50%; width: 55px; height: 55px; border: none; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 22px; display: flex; justify-content: center; align-items: center; transition: 0.3s;}
+        #music-btn { position: fixed; bottom: 25px; right: 25px; background: var(--accent-brown); color: white; border-radius: 50%; width: 55px; height: 55px; border: none; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 22px; display: flex; justify-content: center; align-items: center; transition: 0.3s; opacity: 0; visibility: hidden;}
+        #music-btn.show { opacity: 1; visibility: visible; }
         #music-btn:hover { background: var(--text-dark); transform: scale(1.1); }
 
     </style>
 </head>
-<body>
+<body class="locked">
 
-    <!-- Background Music Autoplay -->
-    <audio id="bg-music" loop autoplay>
+    <!-- === HALAMAN COVER DEPAN === -->
+    <div id="welcome-cover">
+        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; margin-bottom: 30px;">The Wedding Of</p>
+        
+        <div class="names">Daniel <br>&<br> Marceline</div>
+        
+        <div style="margin: 40px 0;">
+            <p style="font-size: 0.9em; margin-bottom: 5px;">Dear,</p>
+            <h2 id="nama-tamu-cover" style="margin-top: 0; font-size: 1.8em;">Guest Name</h2>
+        </div>
+        
+        <button class="btn" onclick="openInvitation()" style="padding: 16px 35px; border-radius: 40px;">Open Invitation</button>
+    </div>
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop>
         <source src="sound.mp3" type="audio/mpeg">
     </audio>
     <button id="music-btn" onclick="toggleMusic()">⏸️</button>
 
+    <!-- === KONTEN UTAMA UNDANGAN === -->
     <div class="container">
         
         <!-- SECTION 1: HERO -->
@@ -119,9 +168,8 @@
             
             <div class="names">Daniel <br>&<br> Marceline</div>
             <br>
-            <p style="font-size: 0.9em; margin-bottom: 5px;">Dear Mr./Mrs./Ms.,</p>
-            <h2 id="nama-tamu" style="margin-top: 0; font-size: 1.8em;">Guest Name</h2>
-            <p style="font-size: 0.75em; color: #888; font-style: italic;">*We apologize for any misspelling of names/titles</p>
+            <p style="font-size: 0.9em; margin-bottom: 5px;">Dear,</p>
+            <h2 id="nama-tamu-hero" style="margin-top: 0; font-size: 1.8em;">Guest Name</h2>
         </div>
 
         <!-- SECTION 2: PROFILES -->
@@ -148,7 +196,6 @@
             <p style="text-align: justify; font-size: 0.9em; line-height: 1.8; color: #555;">
                 From a simple hello to a beautiful forever. We are thrilled to celebrate this special milestone with you. Thank you for being a part of our journey and our upcoming happily ever after.
             </p>
-            <!-- Video dari file lokal -->
             <video width="100%" height="300" controls style="border-radius: 8px; margin-top: 20px;">
                 <source src="video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -238,14 +285,57 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // 1. Get Guest Name from URL
+        // 1. Get Guest Name from URL and apply to Cover & Hero
         const urlParams = new URLSearchParams(window.location.search);
         const namaTamu = urlParams.get('to');
         if(namaTamu) {
-            document.getElementById('nama-tamu').innerText = namaTamu.replace(/\+/g, ' ');
+            const formattedName = namaTamu.replace(/\+/g, ' ');
+            document.getElementById('nama-tamu-cover').innerText = formattedName;
+            document.getElementById('nama-tamu-hero').innerText = formattedName;
         }
 
-        // 2. Countdown Timer
+        // 2. Fungsi Membuka Undangan (Slide Up Cover & Play Music)
+        const bgMusic = document.getElementById("bg-music");
+        const musicBtn = document.getElementById("music-btn");
+        const bodyTag = document.body;
+        const coverTag = document.getElementById("welcome-cover");
+
+        function openInvitation() {
+            // Mainkan musik
+            bgMusic.play();
+            musicBtn.classList.add("show"); // Munculkan tombol musik di pojok
+            musicBtn.innerText = "⏸️";
+
+            // Geser cover ke atas
+            coverTag.classList.add("slide-up");
+
+            // Buka kunci scroll pada body
+            bodyTag.classList.remove("locked");
+
+            // Trigger scroll reveal agar elemen pertama langsung muncul setelah cover hilang
+            setTimeout(revealOnScroll, 500); 
+        }
+
+        // 3. Toggle Music Play/Pause
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.innerText = "⏸️";
+            } else {
+                bgMusic.pause();
+                musicBtn.innerText = "🎵";
+            }
+        }
+
+        // Matikan musik otomatis jika pindah tab browser
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                bgMusic.pause();
+                musicBtn.innerText = "🎵";
+            }
+        });
+
+        // 4. Countdown Timer
         const countDownDate = new Date("Dec 14, 2024 19:00:00").getTime();
         const x = setInterval(function() {
             const now = new Date().getTime();
@@ -262,54 +352,20 @@
             }
         }, 1000);
 
-        // 3. Copy Bank Account
+        // 5. Copy Bank Account
         function copyRekening() {
             navigator.clipboard.writeText("1234567890");
             alert("Account number 1234567890 copied to clipboard!");
         }
 
-        // 4. Music Player & Autoplay Tweak
-        const bgMusic = document.getElementById("bg-music");
-        const musicBtn = document.getElementById("music-btn");
-
-        // Memaksa musik menyala jika tamu mengklik area manapun di layar (kalau browser memblokir autoplay)
-        document.body.addEventListener('click', function() {
-            if (bgMusic.paused) {
-                bgMusic.play();
-                musicBtn.innerText = "⏸️";
-            }
-        }, { once: true });
-
-        function toggleMusic() {
-            if (bgMusic.paused) {
-                bgMusic.play();
-                musicBtn.innerText = "⏸️";
-            } else {
-                bgMusic.pause();
-                musicBtn.innerText = "🎵";
-            }
-        }
-
-        // Matikan musik otomatis jika pindah tab browser
-        document.addEventListener("visibilitychange", function() {
-            if (document.hidden) {
-                bgMusic.pause();
-                musicBtn.innerText = "🎵";
-            } else {
-                // Opsional: nyalakan lagi saat kembali ke tab
-                // bgMusic.play();
-                // musicBtn.innerText = "⏸️";
-            }
-        });
-
-        // 5. Scroll Reveal Transition (Fade In Element saat discroll)
+        // 6. Scroll Reveal Transition
         function revealOnScroll() {
             const reveals = document.querySelectorAll('.reveal');
             const windowHeight = window.innerHeight;
             
             reveals.forEach(reveal => {
                 const elementTop = reveal.getBoundingClientRect().top;
-                const elementVisible = 100; // Jarak sebelum elemen muncul
+                const elementVisible = 100;
                 
                 if (elementTop < windowHeight - elementVisible) {
                     reveal.classList.add('active');
@@ -317,8 +373,6 @@
             });
         }
         window.addEventListener('scroll', revealOnScroll);
-        // Panggil sekali saat dimuat agar elemen atas langsung muncul
-        revealOnScroll(); 
 
     </script>
 </body>
