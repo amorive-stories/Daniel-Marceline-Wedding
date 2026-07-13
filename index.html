@@ -34,20 +34,50 @@
             overflow-x: hidden;
         }
 
-        /* === STYLING UNTUK COVER DEPAN === */
+        /* === STYLING UNTUK COVER DEPAN (DENGAN VIDEO BACKGROUND) === */
         #welcome-cover {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background-color: #FAF8F5;
             z-index: 9999;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+            overflow: hidden;
+        }
+
+        /* Video Background */
+        .cover-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Membuat video memenuhi layar tanpa merusak rasio */
+            z-index: 1;
+        }
+
+        /* Overlay tipis agar teks tetap terbaca di atas video */
+        .cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(250, 248, 245, 0.65); /* Warna beige transparan */
+            z-index: 2;
+        }
+
+        /* Konten Teks di Atas Video */
+        .cover-content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
             padding: 20px;
             box-sizing: border-box;
         }
@@ -139,18 +169,29 @@
 </head>
 <body class="locked">
 
-    <!-- === HALAMAN COVER DEPAN === -->
+    <!-- === HALAMAN COVER DEPAN DENGAN VIDEO BACKGROUND === -->
     <div id="welcome-cover">
-        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; margin: 0 0 10px 0;">The Wedding Of</p>
+        <!-- Video Latar Belakang (harus muted agar bisa autoplay di browser modern) -->
+        <video class="cover-video-bg" autoplay loop muted playsinline>
+            <source src="video1.mp4" type="video/mp4">
+        </video>
         
-        <div class="names">Daniel <br>&<br> Marceline</div>
+        <!-- Lapisan overlay -->
+        <div class="cover-overlay"></div>
         
-        <div style="margin: 35px 0 45px 0;">
-            <p style="font-size: 0.9em; margin-bottom: 5px;">Dear,</p>
-            <h2 id="nama-tamu-cover" style="margin-top: 0; font-size: 1.8em;">Guest Name</h2>
+        <!-- Konten Teks di Atas Video -->
+        <div class="cover-content">
+            <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; margin: 0 0 10px 0; font-weight: 500;">The Wedding Of</p>
+            
+            <div class="names">Daniel <br>&<br> Marceline</div>
+            
+            <div style="margin: 35px 0 45px 0;">
+                <p style="font-size: 0.9em; margin-bottom: 5px; font-weight: 500;">Dear,</p>
+                <h2 id="nama-tamu-cover" style="margin-top: 0; font-size: 1.8em;">Guest Name</h2>
+            </div>
+            
+            <button class="btn" onclick="openInvitation()" style="padding: 16px 35px; border-radius: 40px; font-size: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">Open Invitation</button>
         </div>
-        
-        <button class="btn" onclick="openInvitation()" style="padding: 16px 35px; border-radius: 40px; font-size: 15px;">Open Invitation</button>
     </div>
 
     <!-- Background Music -->
@@ -206,7 +247,6 @@
                 <p>Today, we are thrilled to take this beautiful step forward. We cannot wait to celebrate our love and the beginning of our forever with the people we cherish the most.</p>
             </div>
 
-            <!-- Ditambahkan ID story-video untuk dikontrol via JavaScript -->
             <video id="story-video" width="100%" height="300" controls style="border-radius: 8px; margin-top: 20px;">
                 <source src="video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -251,7 +291,6 @@
             <h2 style="font-size: 2.2em;">Wedding Gift</h2>
             <p style="font-size: 0.9em; line-height: 1.6; color: #555;">Your presence and prayers are the greatest gifts we could ask for. However, if you wish to give a gift to bless our marriage, you may send it via:</p>
             
-            <!-- Rekening 1: Daniel -->
             <div style="background: #fff; padding: 25px; border-radius: 12px; margin: 20px 10px; border: 1px solid var(--border-color);">
                 <strong style="font-size: 1.2em; color: var(--text-dark);">Bank Mandiri</strong><br>
                 <span style="font-size: 1.5em; font-family: 'Cormorant Garamond', serif; font-weight: 600; display: block; margin: 10px 0;">0987654321</span>
@@ -260,7 +299,6 @@
                 <button class="btn" onclick="copyRekening('0987654321')" style="width: 100%; margin: 0;">Copy Account Number</button>
             </div>
 
-            <!-- Rekening 2: Marceline -->
             <div style="background: #fff; padding: 25px; border-radius: 12px; margin: 20px 10px; border: 1px solid var(--border-color);">
                 <strong style="font-size: 1.2em; color: var(--text-dark);">Bank BCA</strong><br>
                 <span style="font-size: 1.5em; font-family: 'Cormorant Garamond', serif; font-weight: 600; display: block; margin: 10px 0;">1234567890</span>
@@ -296,7 +334,7 @@
             </form>
         </div>
 
-        <!-- SECTION 8: CLOSING (Kata Penutup Diperbarui) -->
+        <!-- SECTION 8: CLOSING -->
         <div class="section reveal" style="border-bottom: none; padding: 50px 25px 80px 25px;">
             <p style="font-size: 0.95em; line-height: 1.7; color: #555; font-style: italic; margin-bottom: 20px; padding: 0 10px;">
                 "Your presence and prayers will add an abundance of joy to our special day. We are endlessly grateful for your love and support as we embark on this beautiful journey together."
@@ -309,25 +347,22 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        // 1. Get Guest Name from URL and apply to Cover, Hero, and RSVP Form
+        // 1. Get Guest Name
         const urlParams = new URLSearchParams(window.location.search);
         const namaTamu = urlParams.get('to');
         if(namaTamu) {
             const formattedName = namaTamu.replace(/\+/g, ' ');
             document.getElementById('nama-tamu-cover').innerText = formattedName;
             document.getElementById('nama-tamu-hero').innerText = formattedName;
-            
-            // Auto-fill nama di form RSVP (tetap bisa diedit oleh tamu)
             document.getElementById('rsvp-nama').value = formattedName;
         }
 
-        // 2. Fungsi Membuka Undangan (Slide Up Cover & Play Music)
+        // 2. Fungsi Membuka Undangan
         const bgMusic = document.getElementById("bg-music");
         const musicBtn = document.getElementById("music-btn");
         const bodyTag = document.body;
         const coverTag = document.getElementById("welcome-cover");
         
-        // Variable untuk mendeteksi apakah musik dimatikan sengaja oleh tamu
         let isMusicIntentionallyPaused = false; 
 
         function openInvitation() {
@@ -355,10 +390,9 @@
             }
         }
 
-        // 4. Integrasi Musik Latar & Video (Auto Pause/Play)
+        // 4. Integrasi Musik Latar & Video
         const storyVideo = document.getElementById("story-video");
         
-        // Saat video di-play, musik latar mati
         storyVideo.addEventListener('play', function() {
             if (!bgMusic.paused) {
                 bgMusic.pause();
@@ -366,7 +400,6 @@
             }
         });
 
-        // Saat video di-pause atau selesai, musik menyala lagi (kecuali sebelumnya dimatikan manual)
         storyVideo.addEventListener('pause', function() {
             if (!isMusicIntentionallyPaused) {
                 bgMusic.play();
@@ -381,17 +414,16 @@
             }
         });
 
-        // Matikan musik otomatis jika pindah tab browser
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
                 bgMusic.pause();
                 musicBtn.innerText = "🎵";
             } else if (!isMusicIntentionallyPaused && !document.body.classList.contains("locked")) {
-                // Jangan nyalakan lagi jika di-cover atau sengaja dimatikan
+                // Jangan nyalakan otomatis jika masih di cover
             }
         });
 
-        // 5. Countdown Timer (Dihapus saat waktu habis)
+        // 5. Countdown Timer
         const countDownDate = new Date("Dec 14, 2024 19:00:00").getTime();
         const x = setInterval(function() {
             const now = new Date().getTime();
@@ -404,12 +436,11 @@
             
             if (distance < 0) {
                 clearInterval(x);
-                // Jika waktu habis, sembunyikan seluruh kotak countdown tanpa menampilkan teks tulisan
                 document.getElementById("countdown").style.display = "none";
             }
         }, 1000);
 
-        // 6. Copy Bank Account (Dinamic parameter)
+        // 6. Copy Bank Account
         function copyRekening(noRekening) {
             navigator.clipboard.writeText(noRekening);
             alert("Account number " + noRekening + " copied to clipboard!");
