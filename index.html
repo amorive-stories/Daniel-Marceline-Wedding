@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation | Daniel & Marceline</title>
     
+    <!-- Aesthetic Fonts from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
@@ -95,48 +96,23 @@
         .gallery img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; transition: transform 0.3s; }
         .gallery img:hover { transform: scale(1.03); }
         
-        /* Video */
-        iframe { width: 100%; max-width: 100%; border-radius: 8px; margin-top: 20px; border: none; }
-
         /* Floating Music Button */
         #music-btn { position: fixed; bottom: 25px; right: 25px; background: var(--accent-brown); color: white; border-radius: 50%; width: 55px; height: 55px; border: none; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 22px; display: flex; justify-content: center; align-items: center; transition: 0.3s;}
         #music-btn:hover { background: var(--text-dark); transform: scale(1.1); }
 
-        /* Falling Leaves Animation */
-        #leaf-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 999; overflow: hidden;
-        }
-        .leaf {
-            position: absolute; top: -10%;
-            animation-name: fall, sway;
-            animation-iteration-count: infinite;
-            animation-direction: normal, alternate;
-            animation-timing-function: linear, ease-in-out;
-            opacity: 0.3; /* Transparansi diturunkan agar lebih estetis dan tidak mengganggu */
-        }
-        @keyframes fall {
-            0% { top: -10%; }
-            100% { top: 110%; }
-        }
-        @keyframes sway {
-            0% { transform: translateX(-30px) rotate(-20deg); }
-            100% { transform: translateX(30px) rotate(20deg); }
-        }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
+    <!-- Background Music Autoplay -->
+    <audio id="bg-music" loop autoplay>
         <source src="sound.mp3" type="audio/mpeg">
     </audio>
-    <button id="music-btn" onclick="toggleMusic()">🎵</button>
-
-    <div id="leaf-container"></div>
+    <button id="music-btn" onclick="toggleMusic()">⏸️</button>
 
     <div class="container">
         
+        <!-- SECTION 1: HERO -->
         <div class="section hero reveal">
             <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em;">You Are Invited To The Wedding Of</p>
             <img src="bridegroom.png" alt="Bride and Groom Cover" class="hero-img">
@@ -148,6 +124,7 @@
             <p style="font-size: 0.75em; color: #888; font-style: italic;">*We apologize for any misspelling of names/titles</p>
         </div>
 
+        <!-- SECTION 2: PROFILES -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">The Bride & Groom</h2>
             <p style="font-size: 0.9em; color: #666;">With the blessing of God and our families</p>
@@ -165,14 +142,20 @@
             </div>
         </div>
 
+        <!-- SECTION 3: LOVE STORY & VIDEO LOCAL -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Our Love Story</h2>
             <p style="text-align: justify; font-size: 0.9em; line-height: 1.8; color: #555;">
                 From a simple hello to a beautiful forever. We are thrilled to celebrate this special milestone with you. Thank you for being a part of our journey and our upcoming happily ever after.
             </p>
-            <iframe height="300" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+            <!-- Video dari file lokal -->
+            <video width="100%" height="300" controls style="border-radius: 8px; margin-top: 20px;">
+                <source src="video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
+        <!-- SECTION 4: DATE, TIME & MAPS -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Save The Date</h2>
             <p style="font-size: 1.1em; font-weight: 500;">Saturday, December 14th, 2024</p>
@@ -192,6 +175,7 @@
             <a href="https://calendar.google.com" target="_blank" class="btn">📅 Save to Calendar</a>
         </div>
 
+        <!-- SECTION 5: PRE-WEDDING GALLERY -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Gallery</h2>
             <div class="gallery">
@@ -204,6 +188,7 @@
             </div>
         </div>
 
+        <!-- SECTION 6: GIFTING -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Wedding Gift</h2>
             <p style="font-size: 0.9em; line-height: 1.6; color: #555;">Your presence and prayers are the greatest gifts we could ask for. However, if you wish to give a gift to bless our marriage, you may send it via:</p>
@@ -216,6 +201,7 @@
             </div>
         </div>
 
+        <!-- SECTION 7: RSVP -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">RSVP & Wishes</h2>
             <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">Kindly confirm your attendance</p>
@@ -241,6 +227,7 @@
             </form>
         </div>
 
+        <!-- SECTION 8: CLOSING -->
         <div class="section reveal" style="border-bottom: none; padding: 50px 25px 80px 25px;">
             <p style="font-size: 1em; color: #666; font-style: italic; margin-bottom: 10px;">Looking forward to celebrating this joyful day with you.</p>
             <h2 style="font-size: 2.8em; margin: 15px 0; color: var(--accent-brown);">Thank You</h2>
@@ -249,6 +236,7 @@
 
     </div>
 
+    <!-- JAVASCRIPT -->
     <script>
         // 1. Get Guest Name from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -280,48 +268,41 @@
             alert("Account number 1234567890 copied to clipboard!");
         }
 
-        // 4. Music Player
+        // 4. Music Player & Autoplay Tweak
         const bgMusic = document.getElementById("bg-music");
+        const musicBtn = document.getElementById("music-btn");
+
+        // Memaksa musik menyala jika tamu mengklik area manapun di layar (kalau browser memblokir autoplay)
+        document.body.addEventListener('click', function() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicBtn.innerText = "⏸️";
+            }
+        }, { once: true });
+
         function toggleMusic() {
             if (bgMusic.paused) {
                 bgMusic.play();
-                document.getElementById("music-btn").innerText = "⏸️";
+                musicBtn.innerText = "⏸️";
             } else {
                 bgMusic.pause();
-                document.getElementById("music-btn").innerText = "🎵";
+                musicBtn.innerText = "🎵";
             }
         }
+
+        // Matikan musik otomatis jika pindah tab browser
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
                 bgMusic.pause();
-                document.getElementById("music-btn").innerText = "🎵";
+                musicBtn.innerText = "🎵";
+            } else {
+                // Opsional: nyalakan lagi saat kembali ke tab
+                // bgMusic.play();
+                // musicBtn.innerText = "⏸️";
             }
         });
 
-        // 5. Falling Leaves Animation (Menggunakan jatuh.png)
-        function createLeaves() {
-            const container = document.getElementById('leaf-container');
-            const leafImageUrl = 'jatuh.png'; // File gambar daun kamu
-            const totalLeaves = 12; 
-
-            for (let i = 0; i < totalLeaves; i++) {
-                let leaf = document.createElement('img');
-                leaf.src = leafImageUrl;
-                leaf.classList.add('leaf');
-                
-                leaf.style.left = Math.random() * 100 + 'vw';
-                leaf.style.width = (Math.random() * 15 + 20) + 'px';
-                
-                // Variasi kecepatan jatuh
-                leaf.style.animationDuration = (Math.random() * 8 + 7) + 's, ' + (Math.random() * 3 + 2) + 's';
-                leaf.style.animationDelay = (Math.random() * 10) + 's';
-                
-                container.appendChild(leaf);
-            }
-        }
-        window.addEventListener('DOMContentLoaded', createLeaves);
-
-        // 6. Scroll Reveal Transition (Fade In Element saat discroll)
+        // 5. Scroll Reveal Transition (Fade In Element saat discroll)
         function revealOnScroll() {
             const reveals = document.querySelectorAll('.reveal');
             const windowHeight = window.innerHeight;
