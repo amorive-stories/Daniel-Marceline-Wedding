@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation | Daniel & Marceline</title>
     
-    <!-- Aesthetic Fonts from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
@@ -115,7 +114,7 @@
             animation-iteration-count: infinite;
             animation-direction: normal, alternate;
             animation-timing-function: linear, ease-in-out;
-            opacity: 0.7;
+            opacity: 0.3; /* Transparansi diturunkan agar lebih estetis dan tidak mengganggu */
         }
         @keyframes fall {
             0% { top: -10%; }
@@ -129,22 +128,17 @@
 </head>
 <body>
 
-    <!-- Background Music -->
     <audio id="bg-music" loop>
-        <!-- Ganti src dengan file musik mp3 kamu yang sebenarnya -->
-        <source src="musik_kamu.mp3" type="audio/mpeg">
+        <source src="sound.mp3" type="audio/mpeg">
     </audio>
     <button id="music-btn" onclick="toggleMusic()">🎵</button>
 
-    <!-- Leaf Animation Container -->
     <div id="leaf-container"></div>
 
     <div class="container">
         
-        <!-- SECTION 1: HERO -->
         <div class="section hero reveal">
             <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em;">You Are Invited To The Wedding Of</p>
-            <!-- Foto cover awal -->
             <img src="bridegroom.png" alt="Bride and Groom Cover" class="hero-img">
             
             <div class="names">Daniel <br>&<br> Marceline</div>
@@ -154,19 +148,16 @@
             <p style="font-size: 0.75em; color: #888; font-style: italic;">*We apologize for any misspelling of names/titles</p>
         </div>
 
-        <!-- SECTION 2: PROFILES -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">The Bride & Groom</h2>
             <p style="font-size: 0.9em; color: #666;">With the blessing of God and our families</p>
             <div class="profile-container">
                 <div class="profile">
-                    <!-- Foto Groom -->
                     <img src="groom.png" alt="Groom">
                     <h3>Daniel</h3>
                     <p>Son of<br>Mr. [Father's Name]<br>&<br>Mrs. [Mother's Name]</p>
                 </div>
                 <div class="profile">
-                    <!-- Foto Bride -->
                     <img src="bride.png" alt="Bride">
                     <h3>Marceline</h3>
                     <p>Daughter of<br>Mr. [Father's Name]<br>&<br>Mrs. [Mother's Name]</p>
@@ -174,17 +165,14 @@
             </div>
         </div>
 
-        <!-- SECTION 3: LOVE STORY & VIDEO -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Our Love Story</h2>
             <p style="text-align: justify; font-size: 0.9em; line-height: 1.8; color: #555;">
                 From a simple hello to a beautiful forever. We are thrilled to celebrate this special milestone with you. Thank you for being a part of our journey and our upcoming happily ever after.
             </p>
-            <!-- Ganti URL ini dengan link embed YouTube pre-wedding kamu -->
             <iframe height="300" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
         </div>
 
-        <!-- SECTION 4: DATE, TIME & MAPS -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Save The Date</h2>
             <p style="font-size: 1.1em; font-weight: 500;">Saturday, December 14th, 2024</p>
@@ -204,11 +192,9 @@
             <a href="https://calendar.google.com" target="_blank" class="btn">📅 Save to Calendar</a>
         </div>
 
-        <!-- SECTION 5: PRE-WEDDING GALLERY -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Gallery</h2>
             <div class="gallery">
-                <!-- Foto-foto Prewedding -->
                 <img src="pw1.png" alt="Prewedding 1">
                 <img src="pw2.png" alt="Prewedding 2">
                 <img src="pw3.png" alt="Prewedding 3">
@@ -218,7 +204,6 @@
             </div>
         </div>
 
-        <!-- SECTION 6: GIFTING -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">Wedding Gift</h2>
             <p style="font-size: 0.9em; line-height: 1.6; color: #555;">Your presence and prayers are the greatest gifts we could ask for. However, if you wish to give a gift to bless our marriage, you may send it via:</p>
@@ -231,12 +216,10 @@
             </div>
         </div>
 
-        <!-- SECTION 7: RSVP -->
         <div class="section reveal">
             <h2 style="font-size: 2.2em;">RSVP & Wishes</h2>
             <p style="font-size: 0.9em; color: #666; margin-bottom: 20px;">Kindly confirm your attendance</p>
             
-            <!-- Ganti URL action di bawah ini dengan URL Google Web App kamu -->
             <form id="rsvp-form" action="URL_GOOGLE_APPS_SCRIPT_KAMU" method="POST">
                 <input type="text" name="nama" placeholder="Your Name" required>
                 
@@ -246,7 +229,6 @@
                     <option value="Tidak Hadir">Sorry, I cannot attend</option>
                 </select>
                 
-                <!-- Dropdown jumlah orang sesuai request -->
                 <select name="jumlah_orang">
                     <option value="" disabled selected>Number of persons</option>
                     <option value="1">1 Person</option>
@@ -259,9 +241,14 @@
             </form>
         </div>
 
+        <div class="section reveal" style="border-bottom: none; padding: 50px 25px 80px 25px;">
+            <p style="font-size: 1em; color: #666; font-style: italic; margin-bottom: 10px;">Looking forward to celebrating this joyful day with you.</p>
+            <h2 style="font-size: 2.8em; margin: 15px 0; color: var(--accent-brown);">Thank You</h2>
+            <div class="names" style="font-size: 2.2em; margin-top: 15px;">Daniel & Marceline</div>
+        </div>
+
     </div>
 
-    <!-- JAVASCRIPT -->
     <script>
         // 1. Get Guest Name from URL
         const urlParams = new URLSearchParams(window.location.search);
